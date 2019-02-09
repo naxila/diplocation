@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Хост: 127.0.0.1
--- Время создания: Фев 09 2019 г., 22:46
+-- Время создания: Фев 09 2019 г., 23:07
 -- Версия сервера: 10.1.37-MariaDB
 -- Версия PHP: 7.3.1
 
@@ -21,6 +21,18 @@ SET time_zone = "+00:00";
 --
 -- База данных: `diplocation`
 --
+
+-- --------------------------------------------------------
+
+--
+-- Структура таблицы `access_tokens`
+--
+
+CREATE TABLE `access_tokens` (
+  `id` int(11) NOT NULL,
+  `admin_id` int(11) NOT NULL,
+  `token` varchar(255) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -189,6 +201,12 @@ INSERT INTO `vectors` (`id`, `start_point`, `end_point`, `distance`, `direction`
 --
 
 --
+-- Индексы таблицы `access_tokens`
+--
+ALTER TABLE `access_tokens`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Индексы таблицы `admins`
 --
 ALTER TABLE `admins`
@@ -249,6 +267,12 @@ ALTER TABLE `vectors`
 --
 -- AUTO_INCREMENT для сохранённых таблиц
 --
+
+--
+-- AUTO_INCREMENT для таблицы `access_tokens`
+--
+ALTER TABLE `access_tokens`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT для таблицы `admins`
