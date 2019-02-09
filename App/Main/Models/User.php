@@ -44,6 +44,18 @@ class User extends Model {
 		return false;
 	}
 
+	public static function checkEmail($email) {
+		$user = mysqli_fetch_assoc(self::Query("SELECT * FROM admins WHERE email='$email'"));
+		if ($user == NULL) return true;
+		return false;
+	}
+
+	public static function checkLogin($login) {
+		$user = mysqli_fetch_assoc(self::Query("SELECT * FROM admins WHERE login='$login'"));
+		if ($user == NULL) return true;
+		return false;
+	}
+
 	/* Help methods */
 
 	public static function generateToken($id, $login, $password) {
