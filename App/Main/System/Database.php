@@ -79,6 +79,22 @@ class Database {
 		return self::Query($query);
 	}
 
+	public function Delete($table, $clause = []) {	
+		$query = "DELETE FROM $table";
+
+		if (count($clause)>0) {
+			$len2 = count($clause)-1;
+			$query.=" WHERE ";
+			foreach ($clause as $atr => $value) {
+				if ($i == $len2) { $query.="$atr = '$value'"; }
+				else { $query.="$atr = '$value' AND "; }
+				$i++;
+			}
+		}
+		//dd($query);
+		return self::Query($query);
+	}
+
 }
 
 ?>
