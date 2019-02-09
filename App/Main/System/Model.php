@@ -8,4 +8,9 @@ class Model extends Database {
 		return "Models works good.";
 	}
 
+	public static function ddlog($var) {
+		var_dump($var);
+		die();
+	}
+
 }

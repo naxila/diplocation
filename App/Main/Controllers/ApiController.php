@@ -1,7 +1,6 @@
 <?php
 
 require_once "App/Main/Models/User.php";
-require_once "App/Main/Models/Flat.php";
 require_once "App/Main/Models/Dictionary.php";
 require_once "App/Main/Helpers/Validator.php";
 
@@ -17,7 +16,7 @@ class ApiController extends Controllers {
 
 		$user = User::login($_POST['login'], $_POST['password']);
 
-		if (!$user) return self::jsonResult(false, "Wrong login or password");
+		if (!$user) return self::jsonResult(false, "Неправильный логин или пароль");
 		else return self::jsonResult(true, $user);
 	}
 
@@ -32,7 +31,7 @@ class ApiController extends Controllers {
 
 		$user = User::create($name, $phone, $email, $password);
 
-		if ($user) return self::jsonResult(true, "На номер выслан код подтверждения.");
+		if ($user) return self::jsonResult(true, "Пользователь зарегистрирован успешно.");
 		else return self::jsonResult(false, "Ошибка при регистрации");
 	}
 
@@ -46,6 +45,13 @@ class ApiController extends Controllers {
 
 
 	/* Token free methods */
+
+	public function map() {
+		if (!isset($_GET['building_id'])) return self::jsonResult(false, "Invalid arguments", 403);
+		$map = Dictionary::map($_GET['building_id']);
+		if (!$map) return self::jsonResult(false, "Map not found");
+		return self::jsonResult(true, $map);
+	}
 
 	public function cities() {
 		if (!isset($_GET['country_id'])) return self::jsonResult(false, "Invalid arguments", 403);
