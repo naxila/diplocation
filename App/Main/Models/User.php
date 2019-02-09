@@ -44,6 +44,24 @@ class User extends Model {
 		return false;
 	}
 
+	public static function superStatus($token) {
+		$result = self::Query("SELECT * FROM access_tokens WHERE token='$token'");
+		$result = mysqli_fetch_assoc($result);
+		if ($result != NULL) {
+
+			$userId = $result["admin_id"];
+
+			$Query = self::Query("SELECT * FROM admins WHERE id='$userId'");
+			$Query = mysqli_fetch_assoc($Query);
+
+			if ($Query != NULL && $Query["super_user"] == 1) {
+				return true;
+			}
+		}
+
+		return false;
+	}
+
 	public static function checkEmail($email) {
 		$user = mysqli_fetch_assoc(self::Query("SELECT * FROM admins WHERE email='$email'"));
 		if ($user == NULL) return true;

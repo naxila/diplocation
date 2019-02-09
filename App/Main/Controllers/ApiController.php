@@ -3,6 +3,7 @@
 require_once "App/Main/Models/User.php";
 require_once "App/Main/Models/Dictionary.php";
 require_once "App/Main/Helpers/Validator.php";
+require_once "App/Main/Models/Map.php";
 
 class ApiController extends Controllers {
 
@@ -77,17 +78,112 @@ class ApiController extends Controllers {
 
 	/* Token required methods */
 
-	public function flats() {
+	//Points
+	public function addPoint() {
 		self::checkAccess();
-		if (!Validator::flatQueryValidate($_GET)) return self::jsonResult(false, "Invalid arguments", 403);
-		extract($_GET);
-		$flats = Flat::get($city_id, $min_price, $max_price, $order_by, $limit, $offset);
-	
-		if (!flats) return self::jsonResult(false, "Invalid query");
-		return self::jsonResult(true, $flats);
+		$_POST = json_decode(file_get_contents('php://input'), true);
+		if (!Validator::addPointQueryValidate($_POST)) return self::jsonResult(false, "Invalid arguments", 403);
+
+		extract($_POST);
+
+		$map = Map::addPoint($device_id, $title, $building_id);
+		if (!$map)  return self::jsonResult(false, "Invalid query");
+		return self::jsonResult(true, "Point added!");
+	}
+
+	public function updatePoint() {
+		self::checkAccess();
+		$_POST = json_decode(file_get_contents('php://input'), true);
+		if (!Validator::updatePointQueryValidate($_POST)) return self::jsonResult(false, "Invalid arguments", 403);
+
+		extract($_POST);
+
+		$map = Map::updatePoint($id, $device_id, $title, $building_id);
+		if (!$map)  return self::jsonResult(false, "Invalid query");
+		return self::jsonResult(true, "Point updated!");
+	}
+
+	public function deletePoint() {
+		self::checkAccess();
+		$_POST = json_decode(file_get_contents('php://input'), true);
+		if (!isset($_POST["id"])) return self::jsonResult(false, "Invalid arguments", 403);
+
+		$map = Map::deletePoint($_POST["id"]);
+		if (!$map)  return self::jsonResult(false, "Invalid query");
+		return self::jsonResult(true, "Point deleted!");
 	}
 
 
+	//Vectors
+	public function addVector() {
+		self::checkAccess();
+		$_POST = json_decode(file_get_contents('php://input'), true);
+		if (!Validator::addVectorQueryValidate($_POST)) return self::jsonResult(false, "Invalid arguments", 403);
+
+		extract($_POST);
+
+		$map = Map::addVector($start_point, $end_point, $distance, $direction);
+		if (!$map)  return self::jsonResult(false, "Invalid query");
+		return self::jsonResult(true, "Vector added!");
+	}
+
+	public function updateVector() {
+		self::checkAccess();
+		$_POST = json_decode(file_get_contents('php://input'), true);
+		if (!Validator::updateVectorQueryValidate($_POST)) return self::jsonResult(false, "Invalid arguments", 403);
+
+		extract($_POST);
+
+		$map = Map::updateVector($id, $start_point, $end_point, $distance, $direction);
+		if (!$map)  return self::jsonResult(false, "Invalid query");
+		return self::jsonResult(true, "Vector updated!");
+	}
+
+	public function deleteVector() {
+		self::checkAccess();
+		$_POST = json_decode(file_get_contents('php://input'), true);
+		if (!isset($_POST["id"])) return self::jsonResult(false, "Invalid arguments", 403);
+
+		$map = Map::deleteVector($_POST["id"]);
+		if (!$map)  return self::jsonResult(false, "Invalid query");
+		return self::jsonResult(true, "Vector deleted!");
+	}
+
+
+	//Aliases
+	public function addAlias() {
+		self::checkAccess();
+		$_POST = json_decode(file_get_contents('php://input'), true);
+		if (!isset($_POST["point_id"]) || !isset($_POST["title"])) return self::jsonResult(false, "Invalid arguments", 403);
+
+		extract($_POST);
+
+		$map = Map::addAlias($point_id, $title);
+		if (!$map)  return self::jsonResult(false, "Invalid query");
+		return self::jsonResult(true, "Alias added!");
+	}
+
+	public function updateAlias() {
+		self::checkAccess();
+		$_POST = json_decode(file_get_contents('php://input'), true);
+		if (!isset($_POST["id"]) || !isset($_POST["title"])) return self::jsonResult(false, "Invalid arguments", 403);
+
+		extract($_POST);
+
+		$map = Map::updateAlias($id, $title);
+		if (!$map)  return self::jsonResult(false, "Invalid query");
+		return self::jsonResult(true, "Alias updated!");
+	}
+
+	public function deleteAlias() {
+		self::checkAccess();
+		$_POST = json_decode(file_get_contents('php://input'), true);
+		if (!isset($_POST["id"])) return self::jsonResult(false, "Invalid arguments", 403);
+
+		$map = Map::deleteAlias($_POST["id"]);
+		if (!$map)  return self::jsonResult(false, "Invalid query");
+		return self::jsonResult(true, "Alias deleted!");
+	}
 
 	/* Help methods */
 
@@ -100,6 +196,18 @@ class ApiController extends Controllers {
 		$result = User::status($_GET['token']);
 		if (!$result) {
 			self::jsonResult(false, "Invalid token");
+			exit();
+		}
+	}
+
+	private function checkSuperAccess() {
+		if (!isset($_GET['token'])) {
+			self::jsonResult(false, "Token missed", 403);
+			exit();
+		}
+		$result = User::superStatus($_GET['token']);
+		if (!$result) {
+			self::jsonResult(false, "Access denied!");
 			exit();
 		}
 	}
