@@ -54,6 +54,13 @@ class ApiController extends Controllers {
 		return self::jsonResult(true, $cities);
 	}
 
+	public function buildings() {
+		if (!isset($_GET['city_id'])) return self::jsonResult(false, "Invalid arguments", 403);
+		$buildings = Dictionary::buildings($_GET['city_id']);
+		if (!$buildings) return self::jsonResult(false, "Buildings not found");
+		return self::jsonResult(true, $buildings);
+	}
+
 	public function countries() {
 		$countries = Dictionary::countries();
 		if (!$countries) return self::jsonResult(false, "Countries not found");

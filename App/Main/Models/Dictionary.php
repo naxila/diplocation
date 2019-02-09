@@ -2,6 +2,20 @@
 
 class Dictionary extends Model {
 
+	public function buildings($city_id) {
+		$query = self::Query("SELECT * FROM buildings WHERE city_id='$city_id'");
+
+		if ($query) {
+			$buildings = [];
+			while ($row = mysqli_fetch_assoc($query)) {
+				$buildings[] = $row;
+			}
+			return $buildings;
+		}
+
+		return false;
+	}
+
 	public function cities($country_id) {
 		$query = self::Query("SELECT * FROM cities WHERE country_id='$country_id'");
 
