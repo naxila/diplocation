@@ -44,6 +44,7 @@ class Dictionary extends Model {
 	}
 
 	public function cities($country_id) {
+		
 		$query = self::Query("SELECT * FROM cities WHERE country_id='$country_id'");
 
 		if ($query) {
