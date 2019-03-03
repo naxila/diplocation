@@ -9,6 +9,11 @@ class Controllers {
 		echo json_encode($result);
 		return $status;
 	}
+
+	public function showView($view, $data) {
+		extract($data);
+		include("App/Main/Views/Layouts/mainLayout.php");
+	}
 }
  
 ?>

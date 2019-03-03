@@ -27,7 +27,6 @@ class Map extends Model {
 	}
 
 
-
 	/* Work with Aliases */
 
 	public static function addAlias($pointId, $title) {
