@@ -4,6 +4,9 @@ require_once "App/Main/Models/User.php";
 require_once "App/Main/Models/Dictionary.php";
 require_once "App/Main/Helpers/Validator.php";
 require_once "App/Main/Models/Map.php";
+require_once "App/Main/Models/Buildings.php";
+require_once "App/Main/Models/Countries.php";
+require_once "App/Main/Models/Cities.php";
 
 class ApiController extends Controllers {
 
@@ -45,6 +48,8 @@ class ApiController extends Controllers {
 
 
 
+
+
 	/* Token free methods */
 
 	public function map() {
@@ -76,6 +81,8 @@ class ApiController extends Controllers {
 
 
 
+
+
 	/* Token required methods */
 
 	public function myBuildings() {
@@ -92,6 +99,8 @@ class ApiController extends Controllers {
 
 	}
 
+
+
 	//Points
 	public function addPoint() {
 		self::checkAccess();
@@ -99,6 +108,8 @@ class ApiController extends Controllers {
 		if (!Validator::addPointQueryValidate($_POST)) return self::jsonResult(false, "Invalid arguments", 403);
 
 		extract($_POST);
+
+		self::checkBuildingAccess($building_id);
 
 		$map = Map::addPoint($device_id, $title, $building_id);
 		if (!$map)  return self::jsonResult(false, "Invalid query");
@@ -111,6 +122,7 @@ class ApiController extends Controllers {
 		if (!Validator::updatePointQueryValidate($_POST)) return self::jsonResult(false, "Invalid arguments", 403);
 
 		extract($_POST);
+		self::checkPointAccess($id);
 
 		$map = Map::updatePoint($id, $device_id, $title, $building_id);
 		if (!$map)  return self::jsonResult(false, "Invalid query");
@@ -121,11 +133,13 @@ class ApiController extends Controllers {
 		self::checkAccess();
 		$_POST = json_decode(file_get_contents('php://input'), true);
 		if (!isset($_POST["id"])) return self::jsonResult(false, "Invalid arguments", 403);
-
+		self::checkPointAccess($_POST["id"]);
 		$map = Map::deletePoint($_POST["id"]);
 		if (!$map)  return self::jsonResult(false, "Invalid query");
 		return self::jsonResult(true, "Point deleted!");
 	}
+
+
 
 
 	//Vectors
@@ -135,6 +149,8 @@ class ApiController extends Controllers {
 		if (!Validator::addVectorQueryValidate($_POST)) return self::jsonResult(false, "Invalid arguments", 403);
 
 		extract($_POST);
+		self::checkPointAccess($start_point);
+		self::checkPointAccess($end_point);
 
 		$map = Map::addVector($start_point, $end_point, $distance, $direction);
 		if (!$map)  return self::jsonResult(false, "Invalid query");
@@ -147,6 +163,8 @@ class ApiController extends Controllers {
 		if (!Validator::updateVectorQueryValidate($_POST)) return self::jsonResult(false, "Invalid arguments", 403);
 
 		extract($_POST);
+		self::checkPointAccess($start_point);
+		self::checkPointAccess($end_point);
 
 		$map = Map::updateVector($id, $start_point, $end_point, $distance, $direction);
 		if (!$map)  return self::jsonResult(false, "Invalid query");
@@ -158,10 +176,14 @@ class ApiController extends Controllers {
 		$_POST = json_decode(file_get_contents('php://input'), true);
 		if (!isset($_POST["id"])) return self::jsonResult(false, "Invalid arguments", 403);
 
+		self::checkVectorAccess($_POST["id"]);
+
 		$map = Map::deleteVector($_POST["id"]);
 		if (!$map)  return self::jsonResult(false, "Invalid query");
 		return self::jsonResult(true, "Vector deleted!");
 	}
+
+
 
 
 	//Aliases
@@ -171,6 +193,7 @@ class ApiController extends Controllers {
 		if (!isset($_POST["point_id"]) || !isset($_POST["title"])) return self::jsonResult(false, "Invalid arguments", 403);
 
 		extract($_POST);
+		self::checkPointAccess($point_id);
 
 		$map = Map::addAlias($point_id, $title);
 		if (!$map)  return self::jsonResult(false, "Invalid query");
@@ -183,6 +206,7 @@ class ApiController extends Controllers {
 		if (!isset($_POST["id"]) || !isset($_POST["title"])) return self::jsonResult(false, "Invalid arguments", 403);
 
 		extract($_POST);
+		self::checkAliasAccess($id);
 
 		$map = Map::updateAlias($id, $title);
 		if (!$map)  return self::jsonResult(false, "Invalid query");
@@ -193,10 +217,136 @@ class ApiController extends Controllers {
 		self::checkAccess();
 		$_POST = json_decode(file_get_contents('php://input'), true);
 		if (!isset($_POST["id"])) return self::jsonResult(false, "Invalid arguments", 403);
+		self::checkAliasAccess($$_POST["id"]);
 
 		$map = Map::deleteAlias($_POST["id"]);
 		if (!$map)  return self::jsonResult(false, "Invalid query");
 		return self::jsonResult(true, "Alias deleted!");
+	}
+
+
+
+
+	/* SUPERUSER methods */
+
+
+	public function addBuilding() {
+		self::checkSuperAccess();
+		$_POST = json_decode(file_get_contents('php://input'), true);
+		if (!isset($_POST["title"]) || !isset($_POST["city_id"]) || !isset($_POST["address"])) return self::jsonResult(false, "Invalid arguments", 403);
+
+		extract($_POST);
+		$res = Buildings::addB($title, $city_id, $address);
+
+		if (!$res) return self::jsonResult(false, "Error");
+		return self::jsonResult(true, "Added.");
+
+	}
+
+	public function updateBuilding() {
+		self::checkSuperAccess();
+		$_POST = json_decode(file_get_contents('php://input'), true);
+		if (!isset($_POST["id"]) || !isset($_POST["title"]) || !isset($_POST["city_id"]) || !isset($_POST["address"])) return self::jsonResult(false, "Invalid arguments", 403);
+
+		extract($_POST);
+		$res = Buildings::updateB($id, $title, $city_id, $address);
+
+		if (!$res) return self::jsonResult(false, "Error");
+		return self::jsonResult(true, "Updated.");
+	}
+
+	public function deleteBuilding() {
+		self::checkSuperAccess();
+		$_POST = json_decode(file_get_contents('php://input'), true);
+		if (!isset($_POST["id"])) return self::jsonResult(false, "Invalid arguments", 403);
+
+		extract($_POST);
+		$res = Buildings::deleteB($id);
+
+		if (!$res) return self::jsonResult(false, "Error");
+		return self::jsonResult(true, "Deleted.");
+	}
+
+
+
+	//Countries
+
+	public function addCountry() {
+		self::checkSuperAccess();
+		$_POST = json_decode(file_get_contents('php://input'), true);
+		if (!isset($_POST["title"])) return self::jsonResult(false, "Invalid arguments", 403);
+
+		extract($_POST);
+		$res = Countries::addC($title);
+
+		if (!$res) return self::jsonResult(false, "Error");
+		return self::jsonResult(true, "Added.");
+
+	}
+
+	public function updateCountry() {
+		self::checkSuperAccess();
+		$_POST = json_decode(file_get_contents('php://input'), true);
+		if (!isset($_POST["id"]) || !isset($_POST["title"])) return self::jsonResult(false, "Invalid arguments", 403);
+
+		extract($_POST);
+		$res = Countries::updateC($id, $title);
+
+		if (!$res) return self::jsonResult(false, "Error");
+		return self::jsonResult(true, "Updated.");
+	}
+
+	public function deleteCountry() {
+		self::checkSuperAccess();
+		$_POST = json_decode(file_get_contents('php://input'), true);
+		if (!isset($_POST["id"])) return self::jsonResult(false, "Invalid arguments", 403);
+
+		extract($_POST);
+		$res = Countries::deleteC($id);
+
+		if (!$res) return self::jsonResult(false, "Error");
+		return self::jsonResult(true, "Deleted.");
+	}
+
+
+
+	//Cities
+
+	public function addCity() {
+		self::checkSuperAccess();
+		$_POST = json_decode(file_get_contents('php://input'), true);
+		if (!isset($_POST["title"]) || !isset($_POST["country_id"])) return self::jsonResult(false, "Invalid arguments", 403);
+
+		extract($_POST);
+		$res = Cities::addC($title, $country_id);
+
+		if (!$res) return self::jsonResult(false, "Error");
+		return self::jsonResult(true, "Added.");
+
+	}
+
+	public function updateCity() {
+		self::checkSuperAccess();
+		$_POST = json_decode(file_get_contents('php://input'), true);
+		if (!isset($_POST["id"]) || !isset($_POST["title"]) || !isset($_POST["country_id"])) return self::jsonResult(false, "Invalid arguments", 403);
+
+		extract($_POST);
+		$res = Cities::updateC($id, $title, $country_id);
+
+		if (!$res) return self::jsonResult(false, "Error");
+		return self::jsonResult(true, "Updated.");
+	}
+
+	public function deleteCity() {
+		self::checkSuperAccess();
+		$_POST = json_decode(file_get_contents('php://input'), true);
+		if (!isset($_POST["id"])) return self::jsonResult(false, "Invalid arguments", 403);
+
+		extract($_POST);
+		$res = Cities::deleteC($id);
+
+		if (!$res) return self::jsonResult(false, "Error");
+		return self::jsonResult(true, "Deleted.");
 	}
 
 	/* Help methods */

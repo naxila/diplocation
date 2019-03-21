@@ -122,7 +122,7 @@ class User extends Model {
 		$vector = mysqli_fetch_assoc($vector);
 
 		if ($vector) {
-			return self::checkAccessToBuilding($vector["building_id"]);
+			return self::checkAccessToPoint($vector["start_point"]);
 		}
 
 		return false;	
