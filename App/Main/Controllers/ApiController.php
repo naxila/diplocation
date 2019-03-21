@@ -79,8 +79,47 @@ class ApiController extends Controllers {
 		return self::jsonResult(true, $countries);
 	}
 
+	public function getCountry() {
+		if (!isset($_GET['id'])) return self::jsonResult(false, "Invalid arguments.");
+		$res = Dictionary::getCountry($_GET["id"]);
+		if (!$res) return self::jsonResult(true, "No results.");
+		return self::jsonResult(true, $res);
+	}
 
+	public function getCity() {
+		if (!isset($_GET['id'])) return self::jsonResult(false, "Invalid arguments.");
+		$res = Dictionary::getCity($_GET["id"]);
+		if (!$res) return self::jsonResult(true, "No results.");
+		return self::jsonResult(true, $res);
+	}
 
+	public function getBuilding() {
+		if (!isset($_GET['id'])) return self::jsonResult(false, "Invalid arguments.");
+		$res = Dictionary::getBuilding($_GET["id"]);
+		if (!$res) return self::jsonResult(true, "No results.");
+		return self::jsonResult(true, $res);
+	}
+
+	public function getPoint() {
+		if (!isset($_GET['id'])) return self::jsonResult(false, "Invalid arguments.");
+		$res = Dictionary::getPoint($_GET["id"]);
+		if (!$res) return self::jsonResult(true, "No results.");
+		return self::jsonResult(true, $res);
+	}
+
+	public function getVector() {
+		if (!isset($_GET['id'])) return self::jsonResult(false, "Invalid arguments.");
+		$res = Dictionary::getVector($_GET["id"]);
+		if (!$res) return self::jsonResult(true, "No results.");
+		return self::jsonResult(true, $res);
+	}
+
+	public function getAlias() {
+		if (!isset($_GET['id'])) return self::jsonResult(false, "Invalid arguments.");
+		$res = Dictionary::getAlias($_GET["id"]);
+		if (!$res) return self::jsonResult(true, "No results.");
+		return self::jsonResult(true, $res);
+	}
 
 
 	/* Token required methods */

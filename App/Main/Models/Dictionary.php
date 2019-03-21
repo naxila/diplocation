@@ -72,4 +72,64 @@ class Dictionary extends Model {
 		return false;
 	}
 
+	public function getCountry($id) {
+		$query = self::Query("SELECT * FROM countries WHERE id='$id'");
+		$query = mysqli_fetch_assoc($query);
+		if ($query) {
+			return $query;
+		}
+
+		return false;
+	}
+
+	public function getCity($id) {
+		$query = self::Query("SELECT * FROM cities WHERE id='$id'");
+		$query = mysqli_fetch_assoc($query);
+		if ($query) {
+			return $query;
+		}
+
+		return false;
+	}
+
+	public function getBuilding($id) {
+		$query = self::Query("SELECT * FROM buildings WHERE id='$id'");
+		$query = mysqli_fetch_assoc($query);
+		if ($query) {
+			return $query;
+		}
+
+		return false;
+	}
+
+	public function getPoint($id) {
+		$query = self::Query("SELECT * FROM points WHERE id='$id'");
+		$query = mysqli_fetch_assoc($query);
+		if ($query) {
+			return $query;
+		}
+
+		return false;
+	}
+
+	public function getVector($id) {
+		$query = self::Query("SELECT * FROM vectors WHERE id='$id'");
+		$query = mysqli_fetch_assoc($query);
+		if ($query) {
+			return $query;
+		}
+
+		return false;
+	}
+
+	public function getAlias($id) {
+		$query = self::Query("SELECT * FROM aliases WHERE id='$id'");
+		$query = mysqli_fetch_assoc($query);
+		if ($query) {
+			return $query;
+		}
+
+		return false;
+	}
+
 }
