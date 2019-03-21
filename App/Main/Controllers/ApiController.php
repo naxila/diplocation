@@ -15,7 +15,7 @@ class ApiController extends Controllers {
 
 		if (!isset($_POST) || count($_POST) == 0) return self::jsonResult(false, "Invalid arguments", 403);
 
-		$user = User::login($_POST['login'], $_POST['password']);
+		$user = User::loginWithHash($_POST['login'], $_POST['password']);
 
 		if (!$user) return self::jsonResult(false, "Неправильный логин или пароль");
 		else return self::jsonResult(true, $user);
@@ -77,6 +77,20 @@ class ApiController extends Controllers {
 
 
 	/* Token required methods */
+
+	public function myBuildings() {
+		self::checkAccess();
+		$token = $_GET['token'];
+
+		$buildings = User::getCurrentAdminBuildings($token);
+
+		if ($buildings) {
+			return self::jsonResult(true, $buildings);
+		} else {
+			return self::jsonResult(true, "Здания не найдены.");
+		}
+
+	}
 
 	//Points
 	public function addPoint() {
@@ -198,6 +212,34 @@ class ApiController extends Controllers {
 			self::jsonResult(false, "Invalid token");
 			exit();
 		}
+	}
+
+	private function checkBuildingAccess($id) {
+		if (!User::checkAccessToBuilding($id, $_GET["token"])) {
+			self::jsonResult(false, "У Вас нет доступа для выполнения данной операции.");
+			exit();
+		}
+	}
+
+	private static function checkPointAccess($id) {
+		if (!User::checkAccessToPoint($id, $_GET["token"])) {
+			self::jsonResult(false, "У Вас нет доступа для выполнения данной операции.");
+			exit();
+		}	
+	}
+
+	private static function checkVectorAccess($id) {
+		if (!User::checkAccessToVector($id, $_GET["token"])) {
+			self::jsonResult(false, "У Вас нет доступа для выполнения данной операции.");
+			exit();
+		}	
+	}
+
+	private static function checkAliasAccess($id) {
+		if (!User::checkAccessToAlias($id, $_GET["token"])) {
+			self::jsonResult(false, "У Вас нет доступа для выполнения данной операции.");
+			exit();
+		}	
 	}
 
 	private function checkSuperAccess() {
