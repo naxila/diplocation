@@ -111,7 +111,7 @@ class User extends Model {
 		$point = mysqli_fetch_assoc($point);
 
 		if ($point) {
-			return self::checkAccessToBuilding($point["building_id"]);
+			return self::checkAccessToBuilding($point["building_id"], $token);
 		}
 
 		return false;	
@@ -133,7 +133,7 @@ class User extends Model {
 		$alias = mysqli_fetch_assoc($alias);
 
 		if ($alias) {
-			return self::checkAccessToPoint($alias["point_id"], $token)
+			return self::checkAccessToPoint($alias["point_id"], $token);
 		}
 
 		return false;	

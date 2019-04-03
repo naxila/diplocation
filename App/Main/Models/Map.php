@@ -7,10 +7,12 @@ class Map extends Model {
 	public static function addPoint($deviceId, $title, $buildingId, $token) {
 
 		$admin = self::getAdminId($token);
-
+		
 		self::Insert("points", ["device_id" => $deviceId, "title" => $title, "building_id" => $buildingId, "edited_by"=>$admin]);
 		$point = self::Query("SELECT * FROM points WHERE device_id='$deviceId'");
+		
 		$point = mysqli_fetch_assoc($point);
+		
 		if ($point != NULL){
 			return true;
 		}

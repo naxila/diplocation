@@ -150,7 +150,7 @@ class ApiController extends Controllers {
 
 		self::checkBuildingAccess($building_id);
 
-		$map = Map::addPoint($device_id, $title, $building_id);
+		$map = Map::addPoint($device_id, $title, $building_id, $_GET["token"]);
 		if (!$map)  return self::jsonResult(false, "Invalid query");
 		return self::jsonResult(true, "Point added!");
 	}
@@ -163,7 +163,7 @@ class ApiController extends Controllers {
 		extract($_POST);
 		self::checkPointAccess($id);
 
-		$map = Map::updatePoint($id, $device_id, $title, $building_id);
+		$map = Map::updatePoint($id, $device_id, $title, $building_id, $_GET["token"]);
 		if (!$map)  return self::jsonResult(false, "Invalid query");
 		return self::jsonResult(true, "Point updated!");
 	}
