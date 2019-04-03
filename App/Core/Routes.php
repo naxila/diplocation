@@ -11,9 +11,9 @@ class Routes {
 		$Controller = "main";
 		$Action = "index";
 
-		if($url[1]=="auth" || $url[1]=="reg"){
-			header("location: /");
-		}
+		// if($url[1]=="auth" || $url[1]=="reg"){
+		// 	header("location: /");
+		// }
 
 		if (count($url)>0 && !empty($url[1])) {
 			$Controller = $url[1];

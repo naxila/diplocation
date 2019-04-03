@@ -3,6 +3,7 @@ RewriteEngine On
 RewriteCond %{SCRIPT_FILENAME} !-d  
 RewriteCond %{SCRIPT_FILENAME} !-f  
 
+RewriteCond %{REQUEST_URI}  !(\.png|\.jpg|\.gif|\.jpeg|\.bmp|\.css|\.js|\.ico)$
 RewriteRule ^(.*)$ ./index.php
 
 Options -Indexes

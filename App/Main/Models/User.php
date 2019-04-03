@@ -19,6 +19,11 @@ class User extends Model {
 		return false;
 	}
 
+	// public static function logout($token) {
+	// 	self::Delete("access_tokens", ["token" => $token]);
+	// 	return true;
+	// }
+
 	public function buildingsByUser($id) {
 		$buildings = self::Query("SELECT buildings.id, buildings.title FROM buildings, admins_buildings WHERE admin_id='$id' AND buildings.id=admins_buildings.building_id");
 

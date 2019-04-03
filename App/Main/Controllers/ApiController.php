@@ -24,6 +24,27 @@ class ApiController extends Controllers {
 		else return self::jsonResult(true, $user);
 	}
 
+	// public function logout() {
+
+	// 	if (!isset($_GET["token"])) return self::jsonResult(false, "Invalid arguments", 403);
+
+	// 	$user = User::logout($_GET["token"]);
+
+	// 	else return self::jsonResult(true, "Logout successfully");
+	// }
+
+	public function loginWeb() {
+
+		$_POST = json_decode(file_get_contents('php://input'), true);
+
+		if (!isset($_POST) || count($_POST) == 0) return self::jsonResult(false, "Invalid arguments", 403);
+
+		$user = User::login($_POST['login'], $_POST['password']);
+
+		if (!$user) return self::jsonResult(false, "Неправильный логин или пароль");
+		else return self::jsonResult(true, $user);
+	}
+
 	public function singIn() {
 		$_POST = json_decode(file_get_contents('php://input'), true);
 		if (!Validator::singInQueryValidate($_POST)) return self::jsonResult(false, "Invalid arguments", 403);
@@ -398,7 +419,7 @@ class ApiController extends Controllers {
 		}
 		$result = User::status($_GET['token']);
 		if (!$result) {
-			self::jsonResult(false, "Invalid token");
+			self::jsonResult(false, "Invalid token", 429);
 			exit();
 		}
 	}
@@ -438,7 +459,7 @@ class ApiController extends Controllers {
 		}
 		$result = User::superStatus($_GET['token']);
 		if (!$result) {
-			self::jsonResult(false, "Access denied!");
+			self::jsonResult(false, "Access denied!", 429);
 			exit();
 		}
 	}
