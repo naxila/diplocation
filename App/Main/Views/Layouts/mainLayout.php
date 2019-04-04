@@ -36,6 +36,12 @@
 
 					<?php } ?>
 
+					<?php if ($_SESSION["super_user"] == 0) { ?>
+
+					<li class="nav-item"><a class="nav-link active" href="/"><em class="fa fa-dashboard"></em> Мои здания <span class="sr-only">(current)</span></a></li>
+
+					<?php } ?>
+
 					<!-- <li class="nav-item"><a class="nav-link active" href="index.html"><em class="fa fa-dashboard"></em> Dashboard <span class="sr-only">(current)</span></a></li>
 					<li class="nav-item"><a class="nav-link" href="widgets.html"><em class="fa fa-calendar-o"></em> Widgets</a></li>
 					<li class="nav-item"><a class="nav-link" href="charts.html"><em class="fa fa-bar-chart"></em> Charts</a></li>
