@@ -22,5 +22,4 @@ class ApiService {
 		return $result;
 	}
 
-
 }

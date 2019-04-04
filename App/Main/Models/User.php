@@ -36,6 +36,18 @@ class User extends Model {
 		return $result;
 	}
 
+	public function getUsers() {
+		$users = self::Query("SELECT * FROM admins");
+
+		$result = [];
+
+		while ($users = mysqli_fetch_assoc($users)) {
+			$result[] = $user;
+		}
+
+		return $result;
+	}
+
 	public function getCurrentAdminBuildings($token) {
 		$admin = self::Query("SELECT * FROM access_tokens WHERE token='$token'");
 		$admin = mysqli_fetch_assoc($admin);

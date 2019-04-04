@@ -6,7 +6,7 @@ class AuthController extends Controllers {
 
 		self::checkAuth();
 		self::showPage("auth");
-		
+
 	}
 
 	public function submit() {
@@ -16,10 +16,11 @@ class AuthController extends Controllers {
 		$request = ApiService::makeRequest("loginWeb", "POST", $_POST);
 
 		if ($request["status"]) {
-
 			$response = $request["response"];
+			// var_dump($response); die();
 			$_SESSION["name"] = $response["name"];
 			$_SESSION["token"] = $response["token"];
+			$_SESSION["super_user"] = $response["super_user"];
 
 			header("Location: /");
 

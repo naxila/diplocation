@@ -22,16 +22,26 @@
 	<div class="container-fluid" id="wrapper">
 		<div class="row">
 			<nav class="sidebar col-xs-12 col-sm-4 col-lg-3 col-xl-2">
-				<h1 class="site-title"><a href="index.html"><em class="fa fa-rocket"></em> Diplocation</a></h1>
+				<h1 class="site-title"><a href="/"><em class="fa fa-rocket"></em> Diplocation</a></h1>
 													
 				<a href="#menu-toggle" class="btn btn-default" id="menu-toggle"><em class="fa fa-bars"></em></a>
 				<ul class="nav nav-pills flex-column sidebar-nav">
-					<li class="nav-item"><a class="nav-link active" href="index.html"><em class="fa fa-dashboard"></em> Dashboard <span class="sr-only">(current)</span></a></li>
+
+					<?php if ($_SESSION["super_user"] == 1) { ?>
+
+					<li class="nav-item"><a class="nav-link active" href="index.html"><em class="fa fa-dashboard"></em> Пользователи <span class="sr-only">(current)</span></a></li>
+					<li class="nav-item"><a class="nav-link" href="widgets.html"><em class="fa fa-calendar-o"></em> Страны</a></li>
+					<li class="nav-item"><a class="nav-link" href="charts.html"><em class="fa fa-bar-chart"></em> Города</a></li>
+					<li class="nav-item"><a class="nav-link" href="buttons.html"><em class="fa fa-hand-o-up"></em> Здания</a></li>
+
+					<?php } ?>
+
+					<!-- <li class="nav-item"><a class="nav-link active" href="index.html"><em class="fa fa-dashboard"></em> Dashboard <span class="sr-only">(current)</span></a></li>
 					<li class="nav-item"><a class="nav-link" href="widgets.html"><em class="fa fa-calendar-o"></em> Widgets</a></li>
 					<li class="nav-item"><a class="nav-link" href="charts.html"><em class="fa fa-bar-chart"></em> Charts</a></li>
 					<li class="nav-item"><a class="nav-link" href="buttons.html"><em class="fa fa-hand-o-up"></em> Buttons</a></li>
 					<li class="nav-item"><a class="nav-link" href="forms.html"><em class="fa fa-pencil-square-o"></em> Forms</a></li>
-					<li class="nav-item"><a class="nav-link" href="cards.html"><em class="fa fa-clone"></em> Cards</a></li>
+					<li class="nav-item"><a class="nav-link" href="cards.html"><em class="fa fa-clone"></em> Cards</a></li> -->
 				</ul>
 				<a href="/main/logout" class="logout-button"><em class="fa fa-power-off"></em> Выйти</a>
 			</nav>
@@ -44,7 +54,7 @@
 						<img src="/Styles/images/profile-pic.jpg" alt="profile photo" class="circle float-left profile-photo" width="50" height="auto">
 						<div class="username mt-1">
 							<h4 class="mb-1"><?=$_SESSION["name"]?></h4>
-							<h6 class="text-muted">Имя пользователя</h6>
+							<h6 class="text-muted"><?=$_SESSION["super_user"] == 1 ? "Администратор системы" : "Администратор"?></h6>
 						</div>
 						</a>
 						<div class="dropdown-menu dropdown-menu-right" style="margin-right: 1.5rem;" aria-labelledby="dropdownMenuLink"><a class="dropdown-item" href="#"><em class="fa fa-user-circle mr-1"></em> Мои здания</a>
@@ -61,7 +71,7 @@
 	</div>
 
     <!-- Bootstrap core JavaScript
-    ================================================== -->
+    ==================================================
     <!-- Placed at the end of the document so the pages load faster -->
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js" integrity="sha384-b/U6ypiBEHpOf/4+1nzFpr53nxSS+GLCkfwBdFNTxtclqqenISfwAzpKaMNFNmj4" crossorigin="anonymous"></script>

@@ -212,7 +212,7 @@ class ApiController extends Controllers {
 		self::checkPointAccess($start_point);
 		self::checkPointAccess($end_point);
 
-		$map = Map::addVector($start_point, $end_point, $distance, $direction);
+		$map = Map::addVector($start_point, $end_point, $distance, $direction, $_GET["token"]);
 		if (!$map)  return self::jsonResult(false, "Invalid query");
 		return self::jsonResult(true, "Vector added!");
 	}
@@ -226,7 +226,7 @@ class ApiController extends Controllers {
 		self::checkPointAccess($start_point);
 		self::checkPointAccess($end_point);
 
-		$map = Map::updateVector($id, $start_point, $end_point, $distance, $direction);
+		$map = Map::updateVector($id, $start_point, $end_point, $distance, $direction, $_GET["token"]);
 		if (!$map)  return self::jsonResult(false, "Invalid query");
 		return self::jsonResult(true, "Vector updated!");
 	}
@@ -289,6 +289,11 @@ class ApiController extends Controllers {
 
 	/* SUPERUSER methods */
 
+	public function getUsers() {
+		self::checkSuperAccess();
+		$result = User::getUsers();
+		return self::jsonResult(true, $result);
+	}
 
 	public function addBuilding() {
 		self::checkSuperAccess();

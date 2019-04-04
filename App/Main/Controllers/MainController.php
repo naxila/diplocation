@@ -1,5 +1,7 @@
 <?php
-require_once "App/Main/Models/Dictionary.php";
+
+require_once "App/Main/Controllers/AdminsController.php";
+require_once "App/Main/Controllers/BuildingsController.php";
 
 class MainController extends Controllers {
 
@@ -8,13 +10,13 @@ class MainController extends Controllers {
 		if (!isset($_SESSION["name"]) || !isset($_SESSION["token"])) {
 			header("Location: /auth");
 		}
-		$countries = Dictionary::Countries();
-		self::showView("main", ["countries" => $countries]);
 
-	}
+		if ($_SESSION["super_user"] == 1) {
+			AdminsController::index();
+		} else {
+			BuildingsController::index();
+		}
 
-	public function edit() {
-		self::showView("edit", []);
 	}
 
 	public function logout() {
