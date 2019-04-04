@@ -19,6 +19,16 @@ class User extends Model {
 		return false;
 	}
 
+	public static function getUser($id) {
+		$user = self::Query("SELECT * FROM admins WHERE id='$id'");
+		$user = mysqli_fetch_assoc($user);
+		if ($user) {
+			return $user;
+		}
+
+		return false;
+	}
+
 	// public static function logout($token) {
 	// 	self::Delete("access_tokens", ["token" => $token]);
 	// 	return true;
@@ -41,7 +51,7 @@ class User extends Model {
 
 		$result = [];
 
-		while ($users = mysqli_fetch_assoc($users)) {
+		while ($user = mysqli_fetch_assoc($users)) {
 			$result[] = $user;
 		}
 

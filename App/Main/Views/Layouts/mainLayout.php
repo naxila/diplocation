@@ -29,10 +29,10 @@
 
 					<?php if ($_SESSION["super_user"] == 1) { ?>
 
-					<li class="nav-item"><a class="nav-link active" href="index.html"><em class="fa fa-dashboard"></em> Пользователи <span class="sr-only">(current)</span></a></li>
-					<li class="nav-item"><a class="nav-link" href="widgets.html"><em class="fa fa-calendar-o"></em> Страны</a></li>
-					<li class="nav-item"><a class="nav-link" href="charts.html"><em class="fa fa-bar-chart"></em> Города</a></li>
-					<li class="nav-item"><a class="nav-link" href="buttons.html"><em class="fa fa-hand-o-up"></em> Здания</a></li>
+					<li class="nav-item"><a class="nav-link active" href="/"><em class="fa fa-dashboard"></em> Пользователи <span class="sr-only">(current)</span></a></li>
+					<li class="nav-item"><a class="nav-link" href="#"><em class="fa fa-calendar-o"></em> Страны</a></li>
+					<li class="nav-item"><a class="nav-link" href="#"><em class="fa fa-bar-chart"></em> Города</a></li>
+					<li class="nav-item"><a class="nav-link" href="#"><em class="fa fa-hand-o-up"></em> Здания</a></li>
 
 					<?php } ?>
 

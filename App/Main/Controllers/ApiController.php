@@ -295,6 +295,14 @@ class ApiController extends Controllers {
 		return self::jsonResult(true, $result);
 	}
 
+	public function getUser() {
+		self::checkSuperAccess();
+		if (!isset($_GET["id"])) return self::jsonResult(false, "Invalid arguments", 403);
+
+		$result = User::getUser($_GET["id"]);
+		return self::jsonResult(true, $result);
+	}
+
 	public function addBuilding() {
 		self::checkSuperAccess();
 		$_POST = json_decode(file_get_contents('php://input'), true);
