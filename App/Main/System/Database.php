@@ -5,7 +5,7 @@ class Database {
 	public static $mysqli = null;
 
 	public function Connect() {
-		$config = parse_ini_file('App\Core\DB.ini');
+		$config = parse_ini_file('App/Core/DB.ini');
 		self::$mysqli = new mysqli($config['SERVER'], $config['USER'], $config['PASSWORD'], $config['DATABASE']);
 		self::$mysqli->set_charset("utf8");
 		return self::$mysqli;

@@ -21,7 +21,7 @@ class Routes {
 		}
 
 		$ControllerName = ucfirst(strtolower($Controller))."Controller";
-		$Path = "App\Main\Controllers\\".$ControllerName.".php";
+		$Path = "App/Main/Controllers/".$ControllerName.".php";
 		$ActionName = ucfirst(strtolower($Action));
 
 		if (isset($url[3])) {
@@ -35,13 +35,13 @@ class Routes {
 		}
 
 		else if(!empty($url[1]) && preg_match("/[^0-9]/", $url[1]) == 0) {
-			require_once "App\Main\Controllers\MainController.php";
+			require_once "App/Main/Controllers/MainController.php";
 			MainController::Get($url[1]);
 			return false;
 		}
 
 		else {
-			require_once "App\Main\Controllers\ErrorController.php";
+			require_once "App/Main/Controllers/ErrorController.php";
 			return ErrorController::E404();
 		}
 		return ;

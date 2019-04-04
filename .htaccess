@@ -7,3 +7,6 @@ RewriteCond %{REQUEST_URI}  !(\.png|\.jpg|\.gif|\.jpeg|\.bmp|\.css|\.js|\.ico)$
 RewriteRule ^(.*)$ ./index.php
 
 Options -Indexes
+php_flag display_startup_errors on
+php_flag display_errors on
+php_flag html_errors on
