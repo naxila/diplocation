@@ -73,6 +73,48 @@ class ApiController extends Controllers {
 
 	/* Token free methods */
 
+	public function country() {
+		if (!isset($_GET['id'])) return self::jsonResult(false, "Invalid arguments", 403);
+		$map = Countries::get($_GET['id']);
+		if (!$map) return self::jsonResult(false, "Map not found");
+		return self::jsonResult(true, $map);
+	}
+
+	public function city() {
+		if (!isset($_GET['id'])) return self::jsonResult(false, "Invalid arguments", 403);
+		$map = Cities::get($_GET['id']);
+		if (!$map) return self::jsonResult(false, "Map not found");
+		return self::jsonResult(true, $map);
+	}
+
+	public function building() {
+		if (!isset($_GET['id'])) return self::jsonResult(false, "Invalid arguments", 403);
+		$map = Buildings::get($_GET['id']);
+		if (!$map) return self::jsonResult(false, "Map not found");
+		return self::jsonResult(true, $map);
+	}
+
+	public function point() {
+		if (!isset($_GET['id'])) return self::jsonResult(false, "Invalid arguments", 403);
+		$map = Map::getPoint($_GET['id']);
+		if (!$map) return self::jsonResult(false, "Map not found");
+		return self::jsonResult(true, $map);
+	}
+
+	public function vector() {
+		if (!isset($_GET['id'])) return self::jsonResult(false, "Invalid arguments", 403);
+		$map = Map::getVector($_GET['id']);
+		if (!$map) return self::jsonResult(false, "Map not found");
+		return self::jsonResult(true, $map);
+	}
+
+	public function alias() {
+		if (!isset($_GET['id'])) return self::jsonResult(false, "Invalid arguments", 403);
+		$map = Map::getAlias($_GET['id']);
+		if (!$map) return self::jsonResult(false, "Map not found");
+		return self::jsonResult(true, $map);
+	}
+
 	public function map() {
 		if (!isset($_GET['building_id'])) return self::jsonResult(false, "Invalid arguments", 403);
 		$map = Dictionary::map($_GET['building_id']);

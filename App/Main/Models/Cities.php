@@ -2,6 +2,14 @@
 
 class Cities extends Model {
 
+	public static function get($id) {
+		$res = self::Query("SELECT * FROM cities WHERE id='$id'");
+		if ($res = mysqli_fetch_assoc($res)) {
+			return $res;
+		}
+		return false;
+	}
+
 	public static function addC($title, $country_id) {
 		self::Insert("cities", ["title"=>$title, "country_id"=>$country_id]);
 		return true;

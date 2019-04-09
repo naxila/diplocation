@@ -84,6 +84,39 @@ class Map extends Model {
 		return true;
 	}
 
+	public function geVector($id) {
+		$res = self::Query("SELECT * FROM vectors WHERE id='$id'");
+		$res = mysqli_fetch_assoc($res);
+
+		if ($res) {
+			return $res;
+		}
+
+		return false;
+	}
+
+	public function getPoint($id) {
+		$res = self::Query("SELECT * FROM points WHERE id='$id'");
+		$res = mysqli_fetch_assoc($res);
+
+		if ($res) {
+			return $res;
+		}
+
+		return false;
+	}
+
+	public function getAlias($id) {
+		$res = self::Query("SELECT * FROM aliases WHERE id='$id'");
+		$res = mysqli_fetch_assoc($res);
+
+		if ($res) {
+			return $res;
+		}
+
+		return false;
+	}
+
 	private function getAdminId($token) {
 		$admin = self::Query("SELECT * FROM access_tokens WHERE token='$token'");
 		$admin = mysqli_fetch_assoc($admin);

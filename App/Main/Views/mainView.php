@@ -8,7 +8,9 @@
 		</thead>
 		<tbody>
 
-			<?php foreach ($countries as $key => $country) { ?>
+			<?php 
+			if (is_string($countries)) return;
+			foreach ($countries as $key => $country) { ?>
 					<tr>
 						<td><?=$country["id"]?></td>
 						<td><?=$country["title"]?></td>
