@@ -20,7 +20,7 @@
 					<tr>
 						<td><?=$country["id"]?></td>
 						<td><?=$country["title"]?></td>
-						<td><a class="btn btn-success" href="/сities/?id=<?=$country["id"]?>" style="color: #fff;">Города</a></td>
+						<td><a class="btn btn-success" href="/cities/?id=<?=$country["id"]?>" style="color: #fff;">Города</a></td>
 						<td><a class="btn btn-info" href="/countries/edit?id=<?=$country["id"]?>" style="color: #fff;">Изменить</a></td>
 						<td><a class="btn btn-danger" onclick="return alert('Вы уверены?');" href="/countries/delete?id=<?=$country["id"]?>" style="color: #fff;">Х</a></td>
 					</tr>

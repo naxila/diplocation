@@ -8,7 +8,7 @@ class CitiesController extends Controllers {
 			header("Location: /auth");
 		}
 
-		$cities = ApiService::makeRequest("cities", "GET", ["token" => $_SESSION["token"], "city_id" => $_GET["id"]]);
+		$cities = ApiService::makeRequest("cities", "GET", ["token" => $_SESSION["token"], "country_id" => $_GET["id"]]);
 		if ($cities["status"]) {
 			$cities = $cities["response"];
 		} else {
@@ -16,7 +16,6 @@ class CitiesController extends Controllers {
 		}
 
 		self::showView("Cities/list", ["cities" => $cities]);
-
 	}
 
 	public function edit() {
@@ -29,14 +28,14 @@ class CitiesController extends Controllers {
 			header("Location: /");
 		}
 
-		$user = ApiService::makeRequest("getUser", "GET", ["id" => $_GET["id"], "token" => $_SESSION["token"]]);
-		if ($user["status"]) {
-			$user = $user["response"];
+		$city = ApiService::makeRequest("city", "GET", ["id" => $_GET["id"], "token" => $_SESSION["token"]]);
+		if ($city["status"]) {
+			$city = $city["response"];
 		} else {
-			$users = [];
+			$city = [];
 		}
 		
-		self::showView("Users/edit", ["user" => $user]);
+		self::showView("Cities/edit", ["city" => $city]);
 	}
 
 	public function create() {
@@ -45,7 +44,7 @@ class CitiesController extends Controllers {
 			header("Location: /auth");
 		}
 		
-		self::showView("Users/create");
+		self::showView("Cities/create");
 	}
 
 	public function save() {
@@ -54,11 +53,13 @@ class CitiesController extends Controllers {
 			header("Location: /auth");
 		}
 
-		$user = ApiService::makeRequestWithToken("createUser", "POST", $_POST, $_SESSION["token"]);
+		$_POST["country_id"] = $_GET["id"];
+
+		$user = ApiService::makeRequestWithToken("addCity", "POST", $_POST, $_SESSION["token"]);
 		if ($user["status"]) {
-			header("Location: /");
+			header("Location: /cities?id=".$_POST["country_id"]);
 		} else {
-			header("Location: /?error_code=2");
+			header("Location: /?error_code=2&id=".$_POST["country_id"]);
 		}
 	}
 
@@ -72,11 +73,13 @@ class CitiesController extends Controllers {
 			header("Location: /");
 		}
 
-		$user = ApiService::makeRequestWithToken("updateUser?id=".$_GET["id"] , "POST", $_POST, $_SESSION["token"]);
+		$_POST["id"] = $_GET["id"];
+
+		$user = ApiService::makeRequestWithToken("updateCity", "POST", $_POST, $_SESSION["token"]);
 		if ($user["status"]) {
-			header("Location: /");
+			header("Location: /cities?id=".$_POST["country_id"]);
 		} else {
-			header("Location: /?error_code=1");
+			header("Location: /?error_code=1&id=".$_POST["country_id"]);
 		}
 	}
 
@@ -90,49 +93,8 @@ class CitiesController extends Controllers {
 			header("Location: /");
 		}
 
-		$user = ApiService::makeRequestWithToken("deleteUser?id=".$_GET["id"] , "POST", $_POST, $_SESSION["token"]);
-		header("Location: /");
-	}
-
-	public function buildings() {
-
-		if (!isset($_SESSION["name"]) || !isset($_SESSION["token"])) {
-			header("Location: /auth");
-		}
-
-		if (!isset($_GET["id"])) {
-			header("Location: /");
-		}
-
-
-		$user = ApiService::makeRequestWithToken("getUser", "GET", $_GET, $_SESSION["token"]);
-		$userBuildings = ApiService::makeRequestWithToken("buildingsByUser", "GET", $_GET, $_SESSION["token"]);
-		$buildings = ApiService::makeRequest("allBuildings", "GET", $_GET);
-		// var_dump($buildings); die();
-		$keys = [];
-		foreach ($userBuildings["response"] as $key => $value) {
-			$keys[] = $value["id"];
-		}
-
-		$userBuildings = $keys;
-
-		self::showView("Users/buildings", ["user" => $user["response"], "userBuildings" => $userBuildings, "buildings" => $buildings["response"]]);
-	}
-
-	public function saveBuildings() {
-
-		if (!isset($_SESSION["name"]) || !isset($_SESSION["token"])) {
-			header("Location: /auth");
-		}
-
-		if (!isset($_GET["id"])) {
-			header("Location: /");
-		}
-
-		// var_dump($_POST); die();
-
-		$res = ApiService::makeRequestWithToken("saveBuildingsToUser?id=".$_GET["id"], "POST", $_POST, $_SESSION["token"]);
-		header("Location: /");
+		$user = ApiService::makeRequestWithToken("deleteCity", "POST", $_GET, $_SESSION["token"]);
+		header("Location: /cities?id=".$_GET["country_id"]);
 	}
 
 }
