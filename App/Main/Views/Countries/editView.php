@@ -3,7 +3,7 @@
 
 	  <div class="form-group">
 	    <label for="exampleInputEmail1">Название страны</label>
-	    <input type="text" name="title" class="form-control" aria-describedby="emailHelp" placeholder="Введите сазвание страны" value="<?=$country["title"]?>" autocomplete="off">
+	    <input type="text" name="title" class="form-control" aria-describedby="emailHelp" placeholder="Введите название страны" value="<?=$country["title"]?>" autocomplete="off">
 	  </div>
 
 	  <button type="submit" class="btn btn-primary">Сохранить</button>
