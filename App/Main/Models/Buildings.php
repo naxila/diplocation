@@ -3,7 +3,7 @@
 class Buildings extends Model {
 
 	public static function get($id) {
-		$res = self::Query("SELECT * FROM building WHERE id='$id'");
+		$res = self::Query("SELECT * FROM buildings WHERE id='$id'");
 		if ($res = mysqli_fetch_assoc($res)) {
 			return $res;
 		}
@@ -27,7 +27,7 @@ class Buildings extends Model {
 	}
 
 	public static function deleteB($id) {
-		self::Delete("building", ["id"=>$id]);
+		self::Delete("buildings", ["id"=>$id]);
 		return true;
 	}
 
