@@ -94,6 +94,12 @@ class ApiController extends Controllers {
 		return self::jsonResult(true, $buildings);
 	}
 
+	public function allBuildings() {
+		$buildings = Dictionary::allBuildings();
+		if (!$buildings) return self::jsonResult(false, "Buildings not found");
+		return self::jsonResult(true, $buildings);
+	}
+
 	public function countries() {
 		$countries = Dictionary::countries();
 		if (!$countries) return self::jsonResult(false, "Countries not found");
@@ -326,6 +332,21 @@ class ApiController extends Controllers {
 		self::checkSuperAccess();
 		$result = User::getUsers();
 		return self::jsonResult(true, $result);
+	}
+
+	public function buildingsByUser() {
+		self::checkSuperAccess();
+		$result = User::buildingsByUser($_GET["id"]);
+		return self::jsonResult(true, $result);
+	}
+
+	public function saveBuildingsToUser() {
+		self::checkSuperAccess();
+		$_POST = json_decode(file_get_contents('php://input'), true);
+		if (!isset($_GET["id"])) return self::jsonResult(false, "Invalid arguments", 403);
+
+		$res = User::saveBuildingsToUser($_GET["id"], $_POST["buildings"]);
+		return self::jsonResult(true, $res);
 	}
 
 	public function getUser() {

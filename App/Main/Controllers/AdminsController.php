@@ -94,4 +94,45 @@ class AdminsController extends Controllers {
 		header("Location: /");
 	}
 
+	public function buildings() {
+
+		if (!isset($_SESSION["name"]) || !isset($_SESSION["token"])) {
+			header("Location: /auth");
+		}
+
+		if (!isset($_GET["id"])) {
+			header("Location: /");
+		}
+
+
+		$user = ApiService::makeRequestWithToken("getUser", "GET", $_GET, $_SESSION["token"]);
+		$userBuildings = ApiService::makeRequestWithToken("buildingsByUser", "GET", $_GET, $_SESSION["token"]);
+		$buildings = ApiService::makeRequest("allBuildings", "GET", $_GET);
+		// var_dump($buildings); die();
+		$keys = [];
+		foreach ($userBuildings["response"] as $key => $value) {
+			$keys[] = $value["id"];
+		}
+
+		$userBuildings = $keys;
+
+		self::showView("Users/buildings", ["user" => $user["response"], "userBuildings" => $userBuildings, "buildings" => $buildings["response"]]);
+	}
+
+	public function saveBuildings() {
+
+		if (!isset($_SESSION["name"]) || !isset($_SESSION["token"])) {
+			header("Location: /auth");
+		}
+
+		if (!isset($_GET["id"])) {
+			header("Location: /");
+		}
+
+		// var_dump($_POST); die();
+
+		$res = ApiService::makeRequestWithToken("saveBuildingsToUser?id=".$_GET["id"], "POST", $_POST, $_SESSION["token"]);
+		header("Location: /");
+	}
+
 }

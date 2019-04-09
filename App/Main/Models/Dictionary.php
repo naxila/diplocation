@@ -30,7 +30,21 @@ class Dictionary extends Model {
 	}
 
 	public function buildings($city_id) {
-		$query = self::Query("SELECT * FROM buildings WHERE city_id='$city_id'");
+		$query = self::Query("SELECT buildings.id, buildings.title, buildings.address, cities.title AS city FROM buildings, cities WHERE buildings.city_id=cities.id AND buildings.city_id='$city_id'");
+
+		if ($query) {
+			$buildings = [];
+			while ($row = mysqli_fetch_assoc($query)) {
+				$buildings[] = $row;
+			}
+			return $buildings;
+		}
+
+		return false;
+	}
+
+	public function allBuildings() {
+		$query = self::Query("SELECT buildings.id, buildings.title, buildings.address, cities.title AS city FROM buildings, cities WHERE buildings.city_id=cities.id");
 
 		if ($query) {
 			$buildings = [];

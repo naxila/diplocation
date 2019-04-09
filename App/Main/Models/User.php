@@ -46,6 +46,16 @@ class User extends Model {
 		return $result;
 	}
 
+	public function saveBuildingsToUser($id, $buildings) {
+		self::Delete("admins_buildings", ["admin_id" => $id]);
+
+		foreach ($buildings as $key => $value) {
+			self::Insert("admins_buildings", ["admin_id" => $id, "building_id" => $value]);
+		}
+
+		return true;
+	}
+
 	public function getUsers() {
 		$users = self::Query("SELECT * FROM admins");
 
