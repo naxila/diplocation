@@ -69,7 +69,21 @@
 					</div>
 					<div class="clear"></div>
 				</header>
+					<?php if (isset($_GET["error_code"]) && $_GET["error_code"] == 1) { ?>
+						<div class="alert alert-danger">
+						  <strong>Ошибка.</strong> Не удалось сохранить изменения.
+						</div>
+					<?php } ?>
+
+					<?php if (isset($_GET["error_code"]) && $_GET["error_code"] == 2) { ?>
+						<div class="alert alert-danger">
+						  <strong>Ошибка.</strong> Не удалось добавить запись.
+						</div>
+					<?php } ?>
+
 				<section class="row">
+					
+
 					<?php include("App/Main/Views/".$view."View.php"); ?>
 				</section>
 			</main>

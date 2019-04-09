@@ -289,6 +289,39 @@ class ApiController extends Controllers {
 
 	/* SUPERUSER methods */
 
+	public function updateUser() {
+		self::checkSuperAccess();
+		$_POST = json_decode(file_get_contents('php://input'), true);
+		if (!isset($_GET["id"])) return self::jsonResult(false, "Invalid arguments", 403);
+
+		$_POST["id"] = $_GET["id"];
+		$res = User::updateUser($_POST);
+
+		if (!$res) return self::jsonResult(false, "Error");
+		return self::jsonResult(true, "Updated.");
+	}
+
+	public function createUser() {
+		self::checkSuperAccess();
+		$_POST = json_decode(file_get_contents('php://input'), true);
+		
+		$res = User::create($_POST);
+
+		if (!$res) return self::jsonResult(false, "Error");
+		return self::jsonResult(true, "Created.");
+	}
+
+	public function deleteUser() {
+		self::checkSuperAccess();
+		$_POST = json_decode(file_get_contents('php://input'), true);
+		if (!isset($_GET["id"])) return self::jsonResult(false, "Invalid arguments", 403);
+
+		$res = User::deleteUser($_GET["id"]);
+
+		if (!$res) return self::jsonResult(false, "Error");
+		return self::jsonResult(true, "Deleted.");
+	}
+
 	public function getUsers() {
 		self::checkSuperAccess();
 		$result = User::getUsers();

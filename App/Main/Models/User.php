@@ -69,23 +69,35 @@ class User extends Model {
 		return false;
 	}
 
-	public static function create($name, $login, $email, $password) {
+	public static function create($data) {
 
-		$user = self::Query("SELECT * FROM admins WHERE email='$email' OR login='$login'");
-		$user = mysqli_fetch_assoc($user);
+		$data["password"] = md5("ufo" . $data["password"] . "ufo");
 
-		if ($user != NULL){
-			return false;
+		$res = self::Insert("admins", $data);
+		// var_dump($res); die();
+		return $res;
+	}
+
+	public static function deleteUser($id) {
+
+		$res = self::Delete("admins", ["id" => $id]);
+		// var_dump($res); die();
+		return $res;
+	}
+
+	public static function updateUser($data) {
+		$id = $data["id"];
+		unset($data["id"]);
+
+		if (!isset($data["password"]) || $data["password"] == "") {
+			unset($data["password"]);
+		} else {
+			$data["password"] = md5("ufo" . $data["password"] . "ufo");
 		}
 
-		self::Insert("admins", ['name' => $name, 'login' => $LOGIN, 'email' => $email, 'password' => md5("ufo".$password."ufo")]);
-		$user = self::Query("SELECT * FROM admins WHERE email='$email' AND login='$phone'");
-		$user = mysqli_fetch_assoc($user);
-		if ($user != NULL){
-			return true;
-		}
-
-		return false;
+		$res = self::Update("admins", $data, ["id" => $id]);
+		// var_dump($res); die();
+		return $res;
 	}
 
 	public static function status($token) {

@@ -37,7 +37,61 @@ class AdminsController extends Controllers {
 		}
 		
 		self::showView("Users/edit", ["user" => $user]);
+	}
 
+	public function create() {
+
+		if (!isset($_SESSION["name"]) || !isset($_SESSION["token"])) {
+			header("Location: /auth");
+		}
+		
+		self::showView("Users/create");
+	}
+
+	public function save() {
+
+		if (!isset($_SESSION["name"]) || !isset($_SESSION["token"])) {
+			header("Location: /auth");
+		}
+
+		$user = ApiService::makeRequestWithToken("createUser", "POST", $_POST, $_SESSION["token"]);
+		if ($user["status"]) {
+			header("Location: /");
+		} else {
+			header("Location: /?error_code=2");
+		}
+	}
+
+	public function savechanges() {
+
+		if (!isset($_SESSION["name"]) || !isset($_SESSION["token"])) {
+			header("Location: /auth");
+		}
+
+		if (!isset($_GET["id"])) {
+			header("Location: /");
+		}
+
+		$user = ApiService::makeRequestWithToken("updateUser?id=".$_GET["id"] , "POST", $_POST, $_SESSION["token"]);
+		if ($user["status"]) {
+			header("Location: /");
+		} else {
+			header("Location: /?error_code=1");
+		}
+	}
+
+	public function delete() {
+
+		if (!isset($_SESSION["name"]) || !isset($_SESSION["token"])) {
+			header("Location: /auth");
+		}
+
+		if (!isset($_GET["id"])) {
+			header("Location: /");
+		}
+
+		$user = ApiService::makeRequestWithToken("deleteUser?id=".$_GET["id"] , "POST", $_POST, $_SESSION["token"]);
+		header("Location: /");
 	}
 
 }
