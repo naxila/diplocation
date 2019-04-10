@@ -8,30 +8,14 @@ class VectorsController extends Controllers {
 			header("Location: /auth");
 		}
 
-		$buildings = ApiService::makeRequest("buildings", "GET", ["token" => $_SESSION["token"], "city_id" => $_GET["id"]]);
-		if ($buildings["status"]) {
-			$buildings = $buildings["response"];
+		$vectors = ApiService::makeRequest("vectors", "GET", ["token" => $_SESSION["token"], "building_id" => $_GET["id"]]);
+		if ($vectors["status"]) {
+			$vectors = $vectors["response"];
 		} else {
-			$buildings = [];
+			$vectors = [];
 		}
 
-		self::showView("Buildings/list", ["buildings" => $buildings]);
-	}
-
-	public function my() {
-
-		if (!isset($_SESSION["name"]) || !isset($_SESSION["token"])) {
-			header("Location: /auth");
-		}
-
-		$buildings = ApiService::makeRequest("myBuildings", "GET", ["token" => $_SESSION["token"]]);
-		if ($buildings["status"]) {
-			$buildings = $buildings["response"];
-		} else {
-			$buildings = [];
-		}
-
-		self::showView("Buildings/my", ["buildings" => $buildings]);
+		self::showView("Vectors/list", ["vectors" => $vectors]);
 	}
 
 	public function edit() {
@@ -44,14 +28,15 @@ class VectorsController extends Controllers {
 			header("Location: /");
 		}
 
-		$building = ApiService::makeRequest("building", "GET", ["id" => $_GET["id"], "token" => $_SESSION["token"]]);
-		if ($building["status"]) {
-			$building = $building["response"];
+		$vector = ApiService::makeRequest("vector", "GET", ["id" => $_GET["id"], "token" => $_SESSION["token"]]);
+		$points = ApiService::makeRequest("points", "GET", ["building_id" => $_GET["building_id"], "token" => $_SESSION["token"]]);
+		if ($vector["status"]) {
+			$vector = $vector["response"];
 		} else {
-			$building = [];
+			$vector = [];
 		}
-		
-		self::showView("Buildings/edit", ["building" => $building]);
+		// var_dump($points); die();
+		self::showView("Vectors/edit", ["vector" => $vector, "points" => $points["response"]]);
 	}
 
 	public function create() {
@@ -59,8 +44,11 @@ class VectorsController extends Controllers {
 		if (!isset($_SESSION["name"]) || !isset($_SESSION["token"])) {
 			header("Location: /auth");
 		}
+
+		$points = ApiService::makeRequest("points", "GET", ["building_id" => $_GET["id"], "token" => $_SESSION["token"]]);
+		$points = $points["response"];
 		
-		self::showView("Buildings/create");
+		self::showView("Vectors/create", ["points" => $points]);
 	}
 
 	public function save() {
@@ -69,11 +57,11 @@ class VectorsController extends Controllers {
 			header("Location: /auth");
 		}
 
-		$_POST["city_id"] = $_GET["id"];
+		$_POST["building_id"] = $_GET["id"];
 
-		$user = ApiService::makeRequestWithToken("addBuilding", "POST", $_POST, $_SESSION["token"]);
+		$user = ApiService::makeRequestWithToken("addVector", "POST", $_POST, $_SESSION["token"]);
 	
-		header("Location: /buildings?id=".$_POST["city_id"]);
+		header("Location: /vectors?id=".$_POST["building_id"]);
 		
 	}
 
@@ -89,11 +77,13 @@ class VectorsController extends Controllers {
 
 		$_POST["id"] = $_GET["id"];
 
-		$user = ApiService::makeRequestWithToken("updateBuilding", "POST", $_POST, $_SESSION["token"]);
+		// var_dump($_POST); die();
+
+		$user = ApiService::makeRequestWithToken("updateVector", "POST", $_POST, $_SESSION["token"]);
 		if ($user["status"]) {
-			header("Location: /buildings?id=".$_POST["city_id"]);
+			header("Location: /vectors?id=".$_POST["building_id"]);
 		} else {
-			header("Location: /buildings/?error_code=1&id=".$_POST["city_id"]);
+			header("Location: /vectors/?error_code=1&id=".$_POST["building_id"]);
 		}
 	}
 
@@ -107,8 +97,8 @@ class VectorsController extends Controllers {
 			header("Location: /");
 		}
 
-		$user = ApiService::makeRequestWithToken("deleteBuilding", "POST", $_GET, $_SESSION["token"]);
-		header("Location: /buildings?id=".$_GET["city_id"]);
+		$user = ApiService::makeRequestWithToken("deleteVector", "POST", $_GET, $_SESSION["token"]);
+		header("Location: /vectors?id=".$_GET["building_id"]);
 	}
 
 

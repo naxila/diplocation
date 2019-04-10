@@ -75,7 +75,7 @@ class Database {
 				$i++;
 			}
 		}
-		//dd($query);
+		// var_dump($query); die();
 		return self::Query($query);
 	}
 

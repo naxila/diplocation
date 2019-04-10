@@ -281,7 +281,7 @@ class ApiController extends Controllers {
 		self::checkPointAccess($start_point);
 		self::checkPointAccess($end_point);
 
-		$map = Map::addVector($start_point, $end_point, $distance, $direction, $_GET["token"]);
+		$map = Map::addVector($building_id, $start_point, $end_point, $distance, $direction, $_GET["token"]);
 		if (!$map)  return self::jsonResult(false, "Invalid query");
 		return self::jsonResult(true, "Vector added!");
 	}
@@ -295,7 +295,8 @@ class ApiController extends Controllers {
 		self::checkPointAccess($start_point);
 		self::checkPointAccess($end_point);
 
-		$map = Map::updateVector($id, $start_point, $end_point, $distance, $direction, $_GET["token"]);
+		$map = Map::updateVector($id, $building_id, $start_point, $end_point, $distance, $direction, $_GET["token"]);
+
 		if (!$map)  return self::jsonResult(false, "Invalid query");
 		return self::jsonResult(true, "Vector updated!");
 	}

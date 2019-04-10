@@ -89,7 +89,7 @@ class Dictionary extends Model {
 
 	public function vectors($building_id) {
 		
-		$query = self::Query("SELECT * FROM vectors WHERE building_id='$building_id'");
+		$query = self::Query("SELECT vectors.id, vectors.start_point, vectors.end_point, vectors.distance, vectors.direction, vectors.last_update, vectors.building_id, points1.title AS start, points2.title AS endp, admins.name AS editor FROM vectors, points AS points1, points AS points2, admins WHERE vectors.building_id='$building_id' AND points1.id=vectors.start_point AND points2.id=vectors.end_point AND vectors.edited_by=admins.id ORDER BY last_update DESC");
 
 		if ($query) {
 			$vectors = [];

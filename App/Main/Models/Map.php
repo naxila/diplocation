@@ -60,10 +60,10 @@ class Map extends Model {
 
 	/* Work with Vectors */
 
-	public static function addVector($startPoint, $endPoint, $distance, $direction, $token) {
+	public static function addVector($building_id, $startPoint, $endPoint, $distance, $direction, $token) {
 		
 		$admin = self::getAdminId($token);
-		self::Insert("Vectors", ["start_point" => $start_point, "end_point" => $endPoint, "distance" => $distance, "direction" => $direction, "edited_by"=>$admin]);
+		self::Insert("Vectors", ["building_id" => $building_id, "start_point" => $startPoint, "end_point" => $endPoint, "distance" => $distance, "direction" => $direction, "edited_by"=>$admin]);
 		$vector = self::Query("SELECT * FROM points WHERE start_point='$startPoint' AND end_point='$endPoint'");
 		$vector = mysqli_fetch_assoc($vector);
 		if ($vector != NULL){
@@ -73,18 +73,18 @@ class Map extends Model {
 		return false;
 	}
 
-	public static function updateVector($id, $startPoint, $endPoint, $distance, $direction, $token) {
+	public static function updateVector($id, $building_id, $startPoint, $endPoint, $distance, $direction, $token) {
 		$admin = self::getAdminId($token);
-		self::Update("Vectors", ["start_point" => $start_point, "end_point" => $endPoint, "distance" => $distance, "direction" => $direction, "edited_by"=>$admin], ["id" => $id]);
+		self::Update("vectors", ["building_id" => $building_id, "start_point" => $startPoint, "end_point" => $endPoint, "distance" => $distance, "direction" => $direction, "edited_by"=>$admin], ["id" => $id]);
 		return true;
 	}
 
 	public static function deleteVector($id) {
-		self::Delete("Vectors", ["id" => $id]);
+		self::Delete("vectors", ["id" => $id]);
 		return true;
 	}
 
-	public function geVector($id) {
+	public function getVector($id) {
 		$res = self::Query("SELECT * FROM vectors WHERE id='$id'");
 		$res = mysqli_fetch_assoc($res);
 

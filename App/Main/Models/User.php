@@ -178,7 +178,7 @@ class User extends Model {
 		$vector = mysqli_fetch_assoc($vector);
 
 		if ($vector) {
-			return self::checkAccessToPoint($vector["start_point"]);
+			return self::checkAccessToPoint($vector["start_point"], $token);
 		}
 
 		return false;	

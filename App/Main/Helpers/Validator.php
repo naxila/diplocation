@@ -30,6 +30,7 @@ class Validator {
 	}
 
 	public static function addVectorQueryValidate($in) {
+		if (!isset($in['building_id'])) return false;
 		if (!isset($in['start_point'])) return false;
 		if (!isset($in['end_point'])) return false;
 		if (!isset($in['distance'])) return false;
@@ -39,6 +40,7 @@ class Validator {
 
 	public static function updateVectorQueryValidate($in) {
 		if (!isset($in['id'])) return false;
+		if (!isset($in['building_id'])) return false;
 		if (!isset($in['start_point'])) return false;
 		if (!isset($in['end_point'])) return false;
 		if (!isset($in['distance'])) return false;
