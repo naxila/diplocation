@@ -346,7 +346,7 @@ class ApiController extends Controllers {
 		self::checkAccess();
 		$_POST = json_decode(file_get_contents('php://input'), true);
 		if (!isset($_POST["id"])) return self::jsonResult(false, "Invalid arguments", 403);
-		self::checkAliasAccess($$_POST["id"]);
+		self::checkAliasAccess($_POST["id"]);
 
 		$map = Map::deleteAlias($_POST["id"]);
 		if (!$map)  return self::jsonResult(false, "Invalid query");

@@ -8,30 +8,14 @@ class AliasesController extends Controllers {
 			header("Location: /auth");
 		}
 
-		$buildings = ApiService::makeRequest("buildings", "GET", ["token" => $_SESSION["token"], "city_id" => $_GET["id"]]);
+		$buildings = ApiService::makeRequest("aliases", "GET", ["token" => $_SESSION["token"], "point_id" => $_GET["id"]]);
 		if ($buildings["status"]) {
 			$buildings = $buildings["response"];
 		} else {
 			$buildings = [];
 		}
 
-		self::showView("Buildings/list", ["buildings" => $buildings]);
-	}
-
-	public function my() {
-
-		if (!isset($_SESSION["name"]) || !isset($_SESSION["token"])) {
-			header("Location: /auth");
-		}
-
-		$buildings = ApiService::makeRequest("myBuildings", "GET", ["token" => $_SESSION["token"]]);
-		if ($buildings["status"]) {
-			$buildings = $buildings["response"];
-		} else {
-			$buildings = [];
-		}
-
-		self::showView("Buildings/my", ["buildings" => $buildings]);
+		self::showView("Aliases/list", ["aliases" => $buildings]);
 	}
 
 	public function edit() {
@@ -44,14 +28,14 @@ class AliasesController extends Controllers {
 			header("Location: /");
 		}
 
-		$building = ApiService::makeRequest("building", "GET", ["id" => $_GET["id"], "token" => $_SESSION["token"]]);
+		$building = ApiService::makeRequest("alias", "GET", ["id" => $_GET["id"], "token" => $_SESSION["token"]]);
 		if ($building["status"]) {
 			$building = $building["response"];
 		} else {
 			$building = [];
 		}
 		
-		self::showView("Buildings/edit", ["building" => $building]);
+		self::showView("Aliases/edit", ["alias" => $building]);
 	}
 
 	public function create() {
@@ -60,7 +44,7 @@ class AliasesController extends Controllers {
 			header("Location: /auth");
 		}
 		
-		self::showView("Buildings/create");
+		self::showView("Aliases/create");
 	}
 
 	public function save() {
@@ -69,11 +53,11 @@ class AliasesController extends Controllers {
 			header("Location: /auth");
 		}
 
-		$_POST["city_id"] = $_GET["id"];
+		$_POST["point_id"] = $_GET["id"];
 
-		$user = ApiService::makeRequestWithToken("addBuilding", "POST", $_POST, $_SESSION["token"]);
+		$user = ApiService::makeRequestWithToken("addAlias", "POST", $_POST, $_SESSION["token"]);
 	
-		header("Location: /buildings?id=".$_POST["city_id"]);
+		header("Location: /aliases?id=".$_POST["point_id"]);
 		
 	}
 
@@ -89,11 +73,11 @@ class AliasesController extends Controllers {
 
 		$_POST["id"] = $_GET["id"];
 
-		$user = ApiService::makeRequestWithToken("updateBuilding", "POST", $_POST, $_SESSION["token"]);
+		$user = ApiService::makeRequestWithToken("updateAlias", "POST", $_POST, $_SESSION["token"]);
 		if ($user["status"]) {
-			header("Location: /buildings?id=".$_POST["city_id"]);
+			header("Location: /aliases?id=".$_POST["point_id"]);
 		} else {
-			header("Location: /buildings/?error_code=1&id=".$_POST["city_id"]);
+			header("Location: /aliases/?error_code=1&id=".$_POST["point_id"]);
 		}
 	}
 
@@ -107,8 +91,8 @@ class AliasesController extends Controllers {
 			header("Location: /");
 		}
 
-		$user = ApiService::makeRequestWithToken("deleteBuilding", "POST", $_GET, $_SESSION["token"]);
-		header("Location: /buildings?id=".$_GET["city_id"]);
+		$user = ApiService::makeRequestWithToken("deleteAlias", "POST", $_GET, $_SESSION["token"]);
+		header("Location: /aliases?id=".$_GET["point_id"]);
 	}
 
 

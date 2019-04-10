@@ -104,7 +104,7 @@ class Dictionary extends Model {
 
 	public function aliases($point_id) {
 		
-		$query = self::Query("SELECT * FROM aliases WHERE point_id='$point_id'");
+		$query = self::Query("SELECT * FROM points_aliases WHERE point_id='$point_id'");
 
 		if ($query) {
 			$aliases = [];

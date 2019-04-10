@@ -114,8 +114,15 @@ class User extends Model {
 		$result = self::Query("SELECT * FROM access_tokens WHERE token='$token'");
 		$result = mysqli_fetch_assoc($result);
 		if ($result != NULL) {
-			unset($result['id']);
-			return $result;
+
+			$userId = $result["admin_id"];
+
+			$Query = self::Query("SELECT * FROM admins WHERE id='$userId'");
+			$Query = mysqli_fetch_assoc($Query);
+
+			if ($Query != NULL && $Query["super_user"] == 0) {
+				return true;
+			}
 		}
 
 		return false;

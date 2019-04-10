@@ -107,7 +107,7 @@ class Map extends Model {
 	}
 
 	public function getAlias($id) {
-		$res = self::Query("SELECT * FROM aliases WHERE id='$id'");
+		$res = self::Query("SELECT * FROM points_aliases WHERE id='$id'");
 		$res = mysqli_fetch_assoc($res);
 
 		if ($res) {
