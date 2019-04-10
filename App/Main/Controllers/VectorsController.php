@@ -1,6 +1,6 @@
 <?php
 
-class BuildingsController extends Controllers {
+class VectorsController extends Controllers {
 
 	public function index() {
 

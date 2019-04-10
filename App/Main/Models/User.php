@@ -35,7 +35,7 @@ class User extends Model {
 	// }
 
 	public function buildingsByUser($id) {
-		$buildings = self::Query("SELECT buildings.id, buildings.title FROM buildings, admins_buildings WHERE admin_id='$id' AND buildings.id=admins_buildings.building_id");
+		$buildings = self::Query("SELECT buildings.id, buildings.title, cities.title AS city, buildings.address FROM buildings, admins_buildings, cities WHERE admin_id='$id' AND buildings.city_id=cities.id AND buildings.id=admins_buildings.building_id");
 
 		$result = [];
 
@@ -57,7 +57,7 @@ class User extends Model {
 	}
 
 	public function getUsers() {
-		$users = self::Query("SELECT * FROM admins");
+		$users = self::Query("SELECT * FROM admins WHERE id <> '0'");
 
 		$result = [];
 

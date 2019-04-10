@@ -63,8 +63,7 @@
 							<h6 class="text-muted"><?=$_SESSION["super_user"] == 1 ? "Администратор системы" : "Администратор"?></h6>
 						</div>
 						</a>
-						<div class="dropdown-menu dropdown-menu-right" style="margin-right: 1.5rem;" aria-labelledby="dropdownMenuLink"><a class="dropdown-item" href="#"><em class="fa fa-user-circle mr-1"></em> Мои здания</a>
-						     <a class="dropdown-item" href="#"><em class="fa fa-sliders mr-1"></em> Настройки</a>
+						<div class="dropdown-menu dropdown-menu-right" style="margin-right: 1.5rem;" aria-labelledby="dropdownMenuLink">
 						     <a class="dropdown-item" href="/main/logout"><em class="fa fa-power-off mr-1"></em> Выйти</a></div>
 					</div>
 					<div class="clear"></div>

@@ -72,6 +72,51 @@ class Dictionary extends Model {
 		return false;
 	}
 
+	public function points($building_id) {
+		
+		$query = self::Query("SELECT points.id, points.title, points.device_id, admins.name AS editor, points.last_update FROM points, admins WHERE building_id='$building_id' AND admins.id=points.edited_by ORDER BY points.last_update DESC");
+
+		if ($query) {
+			$points = [];
+			while ($row = mysqli_fetch_assoc($query)) {
+				$points[] = $row;
+			}
+			return $points;
+		}
+
+		return false;
+	}
+
+	public function vectors($building_id) {
+		
+		$query = self::Query("SELECT * FROM vectors WHERE building_id='$building_id'");
+
+		if ($query) {
+			$vectors = [];
+			while ($row = mysqli_fetch_assoc($query)) {
+				$vectors[] = $row;
+			}
+			return $vectors;
+		}
+
+		return false;
+	}
+
+	public function aliases($point_id) {
+		
+		$query = self::Query("SELECT * FROM aliases WHERE point_id='$point_id'");
+
+		if ($query) {
+			$aliases = [];
+			while ($row = mysqli_fetch_assoc($query)) {
+				$aliases[] = $row;
+			}
+			return $aliases;
+		}
+
+		return false;
+	}
+
 	public function countries() {
 		$query = self::Query("SELECT * FROM countries");
 

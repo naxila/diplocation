@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Хост: 127.0.0.1
--- Время создания: Фев 09 2019 г., 23:07
+-- Время создания: Апр 10 2019 г., 10:39
 -- Версия сервера: 10.1.37-MariaDB
 -- Версия PHP: 7.3.1
 
@@ -34,6 +34,13 @@ CREATE TABLE `access_tokens` (
   `token` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+--
+-- Дамп данных таблицы `access_tokens`
+--
+
+INSERT INTO `access_tokens` (`id`, `admin_id`, `token`) VALUES
+(40, 2, 'accessd715ccada26cdae40b301a43d8e385bd');
+
 -- --------------------------------------------------------
 
 --
@@ -54,8 +61,10 @@ CREATE TABLE `admins` (
 --
 
 INSERT INTO `admins` (`id`, `login`, `password`, `name`, `email`, `super_user`) VALUES
-(1, 'admin', 'B1469224AF591E16C1E7A0234F13167B', 'SuperAdmin', 'al.pes@bk.ru', 1),
-(2, 'asuadmin', 'B1469224AF591E16C1E7A0234F13167B', 'AsuAdmin', 'asu@edu.ru', 0);
+(1, 'admin', 'b1469224af591e16c1e7a0234f13167b', 'SuperAdmin', 'al.pes@bk.ru', 1),
+(2, 'asuadmin', 'b1469224af591e16c1e7a0234f13167b', 'AsuAdmin', 'asu@edu.ru', 0),
+(4, 'apes', '4f16aeeec0e9c4ef2477bfd120576407', 'Алихан Пешхоев', 'al.pes@bk.ru', 0),
+(5, 'kirill', '4f16aeeec0e9c4ef2477bfd120576407', 'Кирилл', 'kill.real@mail.ru', 0);
 
 -- --------------------------------------------------------
 
@@ -74,7 +83,13 @@ CREATE TABLE `admins_buildings` (
 --
 
 INSERT INTO `admins_buildings` (`id`, `admin_id`, `building_id`) VALUES
-(1, 2, 3);
+(12, 4, 7),
+(13, 5, 3),
+(14, 5, 8),
+(15, 2, 4),
+(16, 2, 7),
+(17, 2, 8),
+(18, 2, 9);
 
 -- --------------------------------------------------------
 
@@ -85,16 +100,20 @@ INSERT INTO `admins_buildings` (`id`, `admin_id`, `building_id`) VALUES
 CREATE TABLE `buildings` (
   `id` int(11) NOT NULL,
   `title` varchar(255) NOT NULL,
-  `city_id` int(11) NOT NULL
+  `city_id` int(11) NOT NULL,
+  `address` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Дамп данных таблицы `buildings`
 --
 
-INSERT INTO `buildings` (`id`, `title`, `city_id`) VALUES
-(3, 'АГУ (тест)', 2),
-(4, 'МГУ (тест)', 1);
+INSERT INTO `buildings` (`id`, `title`, `city_id`, `address`) VALUES
+(3, 'АГУ (тест)', 2, NULL),
+(4, 'МГУ (тест)', 1, 'Пушкина 12'),
+(7, 'АГУ офишл', 2, 'Татищева 12'),
+(8, 'БГУ', 5, ''),
+(9, 'ТГУ', 8, '');
 
 -- --------------------------------------------------------
 
@@ -116,7 +135,8 @@ INSERT INTO `cities` (`id`, `title`, `country_id`) VALUES
 (1, 'Москва', 1),
 (2, 'Астрахань', 1),
 (5, 'Берлин', 2),
-(6, 'Мюнхен', 2);
+(6, 'Мюнхен', 2),
+(8, 'Токио', 3);
 
 -- --------------------------------------------------------
 
@@ -135,7 +155,8 @@ CREATE TABLE `countries` (
 
 INSERT INTO `countries` (`id`, `title`) VALUES
 (1, 'Россия'),
-(2, 'Германия');
+(2, 'Германия'),
+(3, 'Япония');
 
 -- --------------------------------------------------------
 
@@ -147,18 +168,20 @@ CREATE TABLE `points` (
   `id` int(11) NOT NULL,
   `device_id` varchar(255) NOT NULL,
   `title` varchar(255) NOT NULL,
-  `building_id` int(11) NOT NULL
+  `building_id` int(11) NOT NULL,
+  `edited_by` int(11) NOT NULL,
+  `last_update` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Дамп данных таблицы `points`
 --
 
-INSERT INTO `points` (`id`, `device_id`, `title`, `building_id`) VALUES
-(1, '1', 'Точка A', 4),
-(2, '2', 'Точка B', 4),
-(5, '3', 'Точка C', 4),
-(6, '4', 'Точка D', 4);
+INSERT INTO `points` (`id`, `device_id`, `title`, `building_id`, `edited_by`, `last_update`) VALUES
+(1, '1', 'Точка A', 4, 0, '2019-03-03 12:32:07'),
+(2, '2', 'Точка B', 4, 0, '2019-03-03 12:32:07'),
+(5, '3', 'Точка C', 4, 0, '2019-03-03 12:32:07'),
+(6, '4', 'Точка D', 4, 0, '2019-03-03 12:32:07');
 
 -- --------------------------------------------------------
 
@@ -180,21 +203,24 @@ CREATE TABLE `points_aliases` (
 
 CREATE TABLE `vectors` (
   `id` int(11) NOT NULL,
+  `building_id` int(11) NOT NULL,
   `start_point` int(11) NOT NULL,
   `end_point` int(11) NOT NULL,
   `distance` int(11) NOT NULL,
-  `direction` int(11) NOT NULL
+  `direction` int(11) NOT NULL,
+  `edited_by` int(11) NOT NULL,
+  `last_update` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Дамп данных таблицы `vectors`
 --
 
-INSERT INTO `vectors` (`id`, `start_point`, `end_point`, `distance`, `direction`) VALUES
-(1, 1, 2, 3, 0),
-(2, 2, 5, 3, 90),
-(3, 5, 6, 3, 180),
-(4, 6, 1, 3, 270);
+INSERT INTO `vectors` (`id`, `building_id`, `start_point`, `end_point`, `distance`, `direction`, `edited_by`, `last_update`) VALUES
+(1, 4, 1, 2, 3, 0, 0, '2019-04-10 08:37:40'),
+(2, 4, 2, 5, 3, 90, 0, '2019-04-10 08:37:43'),
+(3, 4, 5, 6, 3, 180, 0, '2019-04-10 08:37:47'),
+(4, 4, 6, 1, 3, 270, 0, '2019-04-10 08:37:50');
 
 --
 -- Индексы сохранённых таблиц
@@ -272,37 +298,37 @@ ALTER TABLE `vectors`
 -- AUTO_INCREMENT для таблицы `access_tokens`
 --
 ALTER TABLE `access_tokens`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=41;
 
 --
 -- AUTO_INCREMENT для таблицы `admins`
 --
 ALTER TABLE `admins`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT для таблицы `admins_buildings`
 --
 ALTER TABLE `admins_buildings`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
 
 --
 -- AUTO_INCREMENT для таблицы `buildings`
 --
 ALTER TABLE `buildings`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- AUTO_INCREMENT для таблицы `cities`
 --
 ALTER TABLE `cities`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
 -- AUTO_INCREMENT для таблицы `countries`
 --
 ALTER TABLE `countries`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT для таблицы `points`

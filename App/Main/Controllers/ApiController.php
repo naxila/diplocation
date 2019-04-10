@@ -129,6 +129,27 @@ class ApiController extends Controllers {
 		return self::jsonResult(true, $cities);
 	}
 
+	public function points() {
+		if (!isset($_GET['building_id'])) return self::jsonResult(false, "Invalid arguments", 403);
+		$points = Dictionary::points($_GET['building_id']);
+		if (!$points) return self::jsonResult(false, "points not found");
+		return self::jsonResult(true, $points);
+	}
+
+	public function vectors() {
+		if (!isset($_GET['building_id'])) return self::jsonResult(false, "Invalid arguments", 403);
+		$vectors = Dictionary::vectors($_GET['building_id']);
+		if (!$vectors) return self::jsonResult(false, "vectors not found");
+		return self::jsonResult(true, $vectors);
+	}
+
+	public function aliases() {
+		if (!isset($_GET['point_id'])) return self::jsonResult(false, "Invalid arguments", 403);
+		$aliases = Dictionary::aliases($_GET['point_id']);
+		if (!$aliases) return self::jsonResult(false, "Cities not found");
+		return self::jsonResult(true, $aliases);
+	}
+
 	public function buildings() {
 		if (!isset($_GET['city_id'])) return self::jsonResult(false, "Invalid arguments", 403);
 		$buildings = Dictionary::buildings($_GET['city_id']);

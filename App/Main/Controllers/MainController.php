@@ -14,7 +14,7 @@ class MainController extends Controllers {
 		if ($_SESSION["super_user"] == 1) {
 			AdminsController::index();
 		} else {
-			BuildingsController::index();
+			BuildingsController::my();
 		}
 
 	}

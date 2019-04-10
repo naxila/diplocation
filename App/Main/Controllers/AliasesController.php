@@ -1,6 +1,6 @@
 <?php
 
-class BuildingsController extends Controllers {
+class AliasesController extends Controllers {
 
 	public function index() {
 
